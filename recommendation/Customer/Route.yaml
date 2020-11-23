@@ -1,0 +1,13 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: customer
+  namespace: recommendation
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: customer
+    weight: 100
+  wildcardPolicy: None

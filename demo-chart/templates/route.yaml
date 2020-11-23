@@ -1,0 +1,17 @@
+{{- if .Values.route.create -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "demo-chart.fullname" . }}
+  namespace: {{ .Values.environment }}
+  labels:
+    {{- include "demo-chart.labels" . | nindent 4 }}
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: {{ include "demo-chart.fullname" . }}
+    weight: 100
+  wildcardPolicy: None
+{{- end }}
