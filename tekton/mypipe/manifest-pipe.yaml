@@ -49,10 +49,18 @@ kind: Task
 metadata:
   name: change-manifest
 spec:
+  params:
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+    default: https://github.com/javibc1/Helm-Demo.git
   steps:
+    # - name: git-clone
+    #   image: bitnami/git
+    #   command: ['git', 'clone', '-b', 'main', '$(inputs.params.git-url)']
     - name: check-files
       image: ubuntu
-      command: ['ls', '-lhR']
+      command: ['ls', '-alhR', './source/.git/refs']
     - name: change-manifest
       image: ubuntu
       command:
@@ -63,7 +71,18 @@ spec:
         set -ex
         find . -type f -name "*.yaml" -print0 | xargs -0 sed -i -e 's/$NAME/demo-sed/g' -e 's/$PROJECT/demo/g' -e 's/$IMAGE/quay.io\/f_bernal_cerpa\/demo:latest/g' -e 's/$REPLICAS/1/g'
     - name: git-push
-      image: ubuntu
-      command: ['cat', './source/tekton/mypipe/templates/deploy.yaml']
+      image: bitnami/git
+      command:
+      - /bin/sh
+      args:
+      - -c
+      - |
+        cp -r ./source/tekton/mypipe/templates/* ./source/tekton/mypipe/deploy
+        cd ./source/
+        git config --global user.email "javibc1@hotmail.com"
+        git config --global user.name "javibc1"
+        git add ./tekton/mypipe/deploy/*
+        git commit -m "new deployment"
+        git push origin HEAD:main
   workspaces:
     - name: source
