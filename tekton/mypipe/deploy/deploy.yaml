@@ -1,0 +1,43 @@
+# Source: demo-chart/templates/deployment.yaml
+# quay.io/f_bernal_cerpa/demo:latest, 1, demo-sed, demo
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-sed
+  name: demo-sed
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo-sed
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-sed
+        deploymentconfig: demo-sed
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: demo-nodejs
+          securityContext:
+            {}
+          image: "quay.io/f_bernal_cerpa/demo:latest"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
