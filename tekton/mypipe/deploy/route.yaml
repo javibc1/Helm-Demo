@@ -1,0 +1,17 @@
+# Source: demo-chart/templates/route.yaml
+# demo-sed, demo
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: demo-sed
+  namespace: demo
+  labels:
+    app: demo-sed
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: demo-sed
+    weight: 100
+  wildcardPolicy: None

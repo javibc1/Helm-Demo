@@ -1,0 +1,19 @@
+# Source: demo-chart/templates/service.yaml
+# demo-sed, demo
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-sed
+  namespace: demo
+  labels:
+    app: demo-sed
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: demo-sed
+    deploymentconfig: demo-sed
