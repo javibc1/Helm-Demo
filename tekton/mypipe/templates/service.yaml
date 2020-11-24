@@ -1,0 +1,19 @@
+# Source: $PROJECT-chart/templates/service.yaml
+# $NAME, $PROJECT
+apiVersion: v1
+kind: Service
+metadata:
+  name: $NAME
+  namespace: $PROJECT
+  labels:
+    app: $NAME
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: $NAME
+    deploymentconfig: $NAME

@@ -1,0 +1,17 @@
+# Source: $PROJECT-chart/templates/route.yaml
+# $NAME, $PROJECT
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: $NAME
+  namespace: $PROJECT
+  labels:
+    app: $NAME
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: $NAME
+    weight: 100
+  wildcardPolicy: None

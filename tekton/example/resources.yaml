@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: nodejs-ex-git
+  namespace: tekton
+  labels:
+    app: tekton-workshop
+spec:
+  type: git
+  params:
+  - name: url
+    value: https://github.com/sclorg/nodejs-ex
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: nodejs-ex-image
+  namespace: tekton
+  labels:
+    app: tekton-workshop
+spec:
+  type: image
+  params:
+  - name: url
+    value: image-registry.openshift-image-registry.svc:5000/tekton/nodejs-ex:latest

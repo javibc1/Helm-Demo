@@ -1,0 +1,43 @@
+# Source: $PROJECT-chart/templates/deployment.yaml
+# quay.io/f_bernal_cerpa/$PROJECT:latest, 1, $NAME, $PROJECT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: $NAME
+  name: $NAME
+  namespace: $PROJECT
+spec:
+  selector:
+    matchLabels:
+      app: $NAME
+  replicas: $REPLICAS
+  template:
+    metadata:
+      labels:
+        app: $NAME
+        deploymentconfig: $NAME
+    spec:
+      serviceAccountName: default
+      securityContext:
+        {}
+      containers:
+        - name: $PROJECT-nodejs
+          securityContext:
+            {}
+          image: "quay.io/f_bernal_cerpa/$PROJECT:latest"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}

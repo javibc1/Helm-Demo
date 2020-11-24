@@ -1,0 +1,74 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-demo
+spec:
+  workspaces:
+  - name: shared-workspace
+  params:
+  - name: git-url
+    type: string
+    description: url of the git repo for the code of deployment
+    default: https://github.com/javibc1/Helm-Demo.git
+  - name: git-revision
+    type: string
+    description: revision to be used from repo of the code for deployment
+    default: "main"
+  - name: IMAGE
+    type: string
+    description: image to be build from the code
+    default: quay.io/f_bernal_cerpa/demo:latest
+  tasks:
+  - name: fetch-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: shared-workspace
+    params:
+    - name: url
+      value: $(params.git-url)
+    # - name: subdirectory
+    #   value: "simple-js"
+    - name: revision
+      value: $(params.git-revision)
+    - name: deleteExisting
+      value: "true"
+  - name: check-files
+    taskRef:
+      name: check-files
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    runAfter: 
+    - fetch-repository
+  - name: build-image
+    taskRef:
+      name: buildah
+      kind: ClusterTask
+    params:
+    - name: TLSVERIFY
+      value: "false"
+    - name: IMAGE
+      value: $(params.IMAGE)
+    - name: CONTEXT
+      value: simple-js
+    workspaces:
+    - name: source
+      workspace: shared-workspace
+    runAfter:
+    - check-files
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: check-files
+spec:
+  steps:
+    - name: check-files
+      image: ubuntu
+      command: ['ls', '-lhR']
+  workspaces:
+    - name: source
+---
