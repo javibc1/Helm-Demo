@@ -64,6 +64,6 @@ spec:
         find . -type f -name "*.yaml" -print0 | xargs -0 sed -i -e 's/$NAME/demo-sed/g' -e 's/$PROJECT/demo/g' -e 's/$IMAGE/quay.io\/f_bernal_cerpa\/demo:latest/g' -e 's/$REPLICAS/1/g'
     - name: git-push
       image: ubuntu
-      command: ['ls', '-lhR']
+      command: ['cat', './source/tekton/mypipe/templates/deploy.yaml']
   workspaces:
     - name: source
