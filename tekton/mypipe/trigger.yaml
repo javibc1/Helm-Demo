@@ -1,0 +1,67 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: simple-js-tb
+spec:
+  params:
+  - name: git-repo-url
+    value: https://github.com/javibc1/simple-js.git
+  - name: git-repo-name
+    value: javibc1
+  - name: git-revision
+    value: main
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: simple-js-tt
+spec:
+  params:
+  - name: git-repo-url
+    description: The git repository url
+  - name: git-revision
+    description: The git revision
+    default: main
+  - name: git-repo-name
+    description: The name of the deployment to be created / patched
+
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      name: build-demo-$(tt.params.git-repo-name)-$(uid)
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: build-demo
+      params:
+      - name: deployment-name
+        value: $(tt.params.git-repo-name)
+      - name: git-url
+        value: $(tt.params.git-repo-url)
+      - name: git-revision
+        value: $(tt.params.git-revision)
+      - name: IMAGE
+        value: quay.io/f_bernal_cerpa/demo:latest
+      workspaces:
+      - name: shared-workspace
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 500Mi
+---
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: simple-js
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: GitHub-listener
+      bindings:
+        - ref: simple-js-tb
+      template:
+        name: simple-js-tt
