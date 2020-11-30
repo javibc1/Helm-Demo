@@ -2,7 +2,7 @@
 
 ## Helm
 In [demo-chart](demo-chart/) there's a chart deploying a custom simple application (src of the simple web app can be found in [simple-js](simple-js/)).
-You can see the manifests that the chart creates without installing by running `helm install --dry-run --debug ./demo-chart --genereate-name`
+You can see the manifests that the chart creates without installing them by running `helm install --dry-run --debug ./demo-chart --genereate-name`
 To install the chart `helm install ./demo-chart --genereate-name`
 
 ## Operators
