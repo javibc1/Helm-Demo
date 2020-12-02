@@ -188,7 +188,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reviews-v2
+  name: reviews-v2e
   labels:
     app: reviews
     version: v2
