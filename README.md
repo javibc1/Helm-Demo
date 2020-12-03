@@ -30,4 +30,4 @@ You can find an example of a Tekton pipeline in [tekton/example](tekton/example/
 After installing the ArgoCD operator, a new ArgoCD instance can be deployed by running `oc apply -f argo.yaml`.
 The default user is admin, and you can find the password by executing the command 
 ```oc get secret argocd-cluster -n argocd -ojsonpath='{.data.admin\.password}' | base64 --decode```
-You can now deploy some apps in the ArgoCD console by synchronizing [recommendation](recommendation/), [bookinfo](bookinfo/) or [my-example](tekton/mypipe/deploy/).
+You can now deploy some apps in the ArgoCD console by synchronizing [recommendation](recommendation/), [bookinfo](bookinfo/) or [my-example](tekton/mypipe/deploy/) which has been pushed to the repository by the previous tekton pipeline.
