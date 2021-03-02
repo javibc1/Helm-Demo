@@ -1,4 +1,4 @@
-# Default values for demo-chart.
+# Default values for demo-chart. 
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 environment: sl-helm
