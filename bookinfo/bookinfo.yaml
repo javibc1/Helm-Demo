@@ -58,7 +58,7 @@ metadata:
     app: details
     version: v1
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: details
@@ -111,7 +111,7 @@ metadata:
     app: ratings
     version: v1
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: ratings
@@ -188,7 +188,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reviews-v2
+  name: reviews-v2e
   labels:
     app: reviews
     version: v2
