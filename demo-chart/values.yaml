@@ -1,7 +1,7 @@
 # Default values for demo-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-environment: helm
+environment: sl-helm
 replicaCount: 1
 
 image:
