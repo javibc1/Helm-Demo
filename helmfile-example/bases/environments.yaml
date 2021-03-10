@@ -1,0 +1,10 @@
+---
+environments:
+  prod:
+    values:
+      - autoscaler:
+          enabled: false
+  dev:
+    values:
+      - autoscaler:
+          enabled: false
